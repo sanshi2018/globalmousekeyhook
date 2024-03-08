@@ -98,6 +98,9 @@ namespace Gma.System.MouseKeyHook.Implementation
 
         protected override bool Callback(CallbackData data)
         {
+            var hActiveWnd = ThreadNativeMethods.GetForegroundWindow(); //handle to focused window
+            Handle.Sender = hActiveWnd;
+            
             data.MSwapButton = m_SwapButtonThreshold;
 
             var e = GetEventArgs(data);

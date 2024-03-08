@@ -15,6 +15,8 @@ namespace Gma.System.MouseKeyHook.WinApi
         }
 
         public HookProcedureHandle Handle { get; }
+        
+        public object Sender { get; set; }
 
         public HookProcedure Procedure { get; }
 

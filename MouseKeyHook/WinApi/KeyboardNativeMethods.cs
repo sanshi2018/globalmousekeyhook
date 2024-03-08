@@ -3,6 +3,7 @@
 // See license.txt or https://mit-license.org/
 
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -166,6 +167,12 @@ namespace Gma.System.MouseKeyHook.WinApi
             var hActiveWnd = ThreadNativeMethods.GetForegroundWindow(); //handle to focused window
             int dwProcessId;
             var hCurrentWnd = ThreadNativeMethods.GetWindowThreadProcessId(hActiveWnd, out dwProcessId);
+            //
+            // int length = WindowNativeMethods.GetWindowTextLength(hActiveWnd);
+            // StringBuilder windowName = new StringBuilder(length + 1);
+            // WindowNativeMethods.GetWindowText(hActiveWnd, windowName, windowName.Capacity);
+            //
+            // Debug.WriteLine($"[{windowName}]:按下键盘" + hCurrentWnd + " " + dwProcessId + "");
             //thread of focused window
             return GetKeyboardLayout(hCurrentWnd); //get the layout identifier for the thread whose window is focused
         }

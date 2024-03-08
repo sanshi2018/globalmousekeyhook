@@ -4,7 +4,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using Gma.System.MouseKeyHook.WinApi;
 
@@ -56,6 +58,9 @@ namespace Gma.System.MouseKeyHook.Implementation
 
         protected override bool Callback(CallbackData data)
         {
+            var hActiveWnd = ThreadNativeMethods.GetForegroundWindow(); //handle to focused window
+            Handle.Sender = hActiveWnd;
+            
             var eDownUp = GetDownUpEventArgs(data);
 
             InvokeKeyDown(eDownUp);

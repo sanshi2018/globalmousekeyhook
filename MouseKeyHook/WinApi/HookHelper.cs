@@ -19,20 +19,45 @@ namespace Gma.System.MouseKeyHook.WinApi
         {
             return HookApp(HookIds.WH_MOUSE, callback);
         }
+        public static HookResult HookAppMouse(Callback callback, int threadId)
+        {
+            return HookApp(HookIds.WH_MOUSE, callback, threadId);
+        }
+        
+        public static HookResult HookGlobalMouse(Callback callback)
+        {
+            return HookGlobal(HookIds.WH_MOUSE_LL, callback);
+        }
 
         public static HookResult HookAppKeyboard(Callback callback)
         {
             return HookApp(HookIds.WH_KEYBOARD, callback);
         }
 
-        public static HookResult HookGlobalMouse(Callback callback)
+        public static HookResult HookAppKeyboard(Callback callback, int threadId)
         {
-            return HookGlobal(HookIds.WH_MOUSE_LL, callback);
+            return HookApp(HookIds.WH_KEYBOARD, callback, threadId);
         }
 
         public static HookResult HookGlobalKeyboard(Callback callback)
         {
             return HookGlobal(HookIds.WH_KEYBOARD_LL, callback);
+        }
+
+        private static HookResult HookApp(int hookId, Callback callback, int threadId)
+        {
+            _appHookProc = (code, param, lParam) => HookProcedure(code, param, lParam, callback);
+
+            var hookHandle = HookNativeMethods.SetWindowsHookEx(
+                hookId,
+                _appHookProc,
+                IntPtr.Zero,
+                threadId);
+
+            if (hookHandle.IsInvalid)
+                ThrowLastUnmanagedErrorAsException();
+
+            return new HookResult(hookHandle, _appHookProc);
         }
 
         private static HookResult HookApp(int hookId, Callback callback)
